@@ -1,199 +1,1706 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Euro Finance (WERC) — Independent Multi-Chain DeFi</title>
-  <meta name="description" content="Euro Finance (WERC) / Wien Euro Reserve Coin is an independent multi-chain DeFi project. Not affiliated with Circle, not related to EURC, not euro-pegged."/>
-  <meta property="og:title" content="Euro Finance (WERC) — Independent Multi-Chain DeFi" />
-  <meta property="og:description" content="Not Circle. Not EURC. Not euro-pegged. Market-priced asset." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/img/werc.png" />
-  <link rel="icon" href="assets/img/favicons/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png" />
-  <link rel="manifest" href="site.webmanifest" />
-  <meta name="msapplication-config" content="browserconfig.xml" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="stylesheet" href="assets/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euro Finance (WERC) | Independent Multi-Chain DeFi Protocol</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #0066FF;
+            --primary-cyan: #00D4FF;
+            --primary-purple: #7B61FF;
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --success: #00D4FF;
+            --warning: #FFB800;
+            --danger: #FF4444;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(123, 97, 255, 0.08) 0%, transparent 40%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        /* Official Contract Banner */
+        .official-contract {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(0, 212, 255, 0.1));
+            border: 2px solid var(--primary-cyan);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .official-contract::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .official-contract h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-cyan);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .official-contract .contract-address {
+            font-family: 'Courier New', monospace;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .official-contract .contract-address:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            position: relative;
+        }
+
+        .logo-icon::before,
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            border: 2px solid var(--primary-cyan);
+            border-radius: 50%;
+            animation: orbit 4s linear infinite;
+        }
+
+        .logo-icon::before {
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+        }
+
+        .logo-icon::after {
+            width: 80px;
+            height: 80px;
+            animation-delay: -2s;
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-cyan));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 5% 2rem;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--primary-cyan);
+            margin-bottom: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary-cyan) 50%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .hero-description {
+            max-width: 700px;
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
+            color: white;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 102, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+            transform: translateY(-3px);
+        }
+
+        /* Manifesto Section */
+        .manifesto {
+            padding: 6rem 5%;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-cyan));
+            border-radius: 2px;
+        }
+
+        .manifesto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .manifesto-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .manifesto-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-cyan));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .manifesto-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.15);
+        }
+
+        .manifesto-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .manifesto-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .manifesto-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .manifesto-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .team-quote {
+            margin-top: 4rem;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary-cyan);
+            border-radius: 0 16px 16px 0;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        .team-quote::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--primary-cyan);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            opacity: 0.3;
+        }
+
+        .team-quote p {
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-quote footer {
+            color: var(--primary-cyan);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* Primary Network Section */
+        .primary-network {
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(0, 212, 255, 0.05));
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .primary-network-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .primary-network h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--primary-cyan);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .primary-network .badge {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .primary-network p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .primary-contract {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--primary-cyan);
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .primary-contract:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        .primary-contract .label {
+            color: var(--primary-cyan);
+            font-weight: 600;
+        }
+
+        /* Contracts Section */
+        .contracts {
+            padding: 6rem 5%;
+        }
+
+        .contracts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .contract-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .contract-card:hover {
+            border-color: var(--primary-cyan);
+            transform: translateX(10px);
+        }
+
+        .contract-card.primary {
+            border: 2px solid var(--primary-cyan);
+            background: rgba(0, 212, 255, 0.05);
+            position: relative;
+        }
+
+        .contract-card.primary::after {
+            content: 'PRIMARY';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .chain-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .bnb { background: rgba(243, 186, 47, 0.2); color: #F3BA2F; }
+        .arb { background: rgba(40, 160, 240, 0.2); color: #28A0F0; }
+        .tron { background: rgba(255, 0, 64, 0.2); color: #FF0040; }
+
+        .contract-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contract-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contract-address {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: var(--primary-cyan);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .copy-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: rgba(0, 255, 0, 0.5);
+            color: #00ff00;
+        }
+
+        /* Deprecated Section */
+        .deprecated {
+            padding: 3rem 5%;
+            background: rgba(255, 68, 68, 0.05);
+            border-top: 1px solid rgba(255, 68, 68, 0.2);
+        }
+
+        .deprecated h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--danger);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .deprecated-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .deprecated-card {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            opacity: 0.7;
+        }
+
+        .deprecated-card h4 {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .deprecated-card .address {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+
+        /* Tokenomics Section */
+        .tokenomics {
+            padding: 6rem 5%;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .tokenomics-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .tokenomics-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tokenomics-chart {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1;
+            margin: 0 auto;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .chart-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .chart-center h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--primary-cyan);
+        }
+
+        .chart-center p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .tokenomics-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .legend-item:hover {
+            border-color: var(--primary-cyan);
+            transform: translateX(10px);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .legend-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .legend-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-value {
+            margin-left: auto;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            color: var(--primary-cyan);
+        }
+
+        /* Timeline Section */
+        .timeline {
+            padding: 6rem 5%;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 4rem auto 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-blue), var(--primary-cyan), var(--primary-purple));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 3rem;
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 3rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary-cyan);
+            border-radius: 50%;
+            border: 4px solid var(--dark-bg);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            z-index: 10;
+        }
+
+        .timeline-content {
+            width: calc(50% - 3rem);
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--primary-cyan);
+            transform: scale(1.05);
+        }
+
+        .timeline-date {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-cyan);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* White Paper Section */
+        .whitepaper {
+            padding: 6rem 5%;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .whitepaper-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .whitepaper-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .wp-nav {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .wp-nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .wp-nav-item:hover,
+        .wp-nav-item.active {
+            border-left-color: var(--primary-cyan);
+            color: var(--text-primary);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .wp-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+
+        .wp-section {
+            margin-bottom: 3rem;
+        }
+
+        .wp-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-cyan);
+        }
+
+        .wp-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .wp-section ul {
+            color: var(--text-secondary);
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .wp-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-box {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box strong {
+            color: var(--danger);
+        }
+
+        /* Community Section */
+        .community {
+            padding: 6rem 5%;
+            text-align: center;
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+
+        .community-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .community-link:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-cyan);
+            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.2);
+        }
+
+        .community-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 15, 0.95);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(odd) {
+                flex-direction: column;
+                text-align: left;
+            }
+
+            .timeline-item .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-content {
+                margin: 1.5rem 0 0 0;
+                width: 100%;
+            }
+
+            .timeline-line {
+                left: 20px;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .official-contract .contract-address {
+                font-size: 0.9rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .primary-contract {
+                flex-direction: column;
+                gap: 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 12px;
+            color: var(--primary-cyan);
+            font-weight: 500;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+    </style>
 </head>
-
 <body>
-<header class="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="index.html">
-      <img src="assets/img/werc.png" alt="WERC logo"/>
-      <div>
-        <div>EURO FINANCE (WERC)</div>
-        <span class="sub">Wien Euro Reserve Coin</span>
-      </div>
-    </a>
+    <!-- Background Animation -->
+    <div class="bg-animation"></div>
 
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="#networks">Networks</a>
-      <a class="nav-alert" href="not-circle.html">Not Circle / Not EURC</a>
-      <a href="#press">Press</a>
-      <a href="security.html">Security</a>
-      <a href="docs.html">Docs</a>
-      <a href="brand-kit.html">Brand Kit</a>
-      <a href="#community">Community</a>
-    </div>
-
-    <div class="lang">
-      <button type="button" data-lang="en">EN</button>
-      <button type="button" data-lang="ru">RU</button>
-    </div>
-  </div>
-</header>
-
-<main>
-<section class="hero">
-  <div class="container hero-grid">
-    <div>
-      <h1>Independent Multi-Chain DeFi. Transparent. Verifiable.</h1>
-      <p class="lead">
-        Euro Finance (WERC) is a community-driven project publishing official contracts,
-        explorer references, and security resources for on-chain verification.
-      </p>
-
-      <div class="notice">
-        <strong>IMPORTANT: We are NOT Circle. We are NOT EURC. We are NOT euro-pegged.</strong>
-        <p>
-          Euro Finance (WERC) is an <b>independent</b> DeFi project. We are <b>not affiliated with Circle</b>,
-          <b>not related to EURC</b>, and WERC is <b>not a stablecoin</b>.
-          WERC is a <b>market-priced digital asset</b>; the “€” symbol is thematic branding only.
-        </p>
-        <div class="pill">
-          <span>Not Circle</span>
-          <span>Not EURC</span>
-          <span>Not Euro-Pegged</span>
-          <span>Market-Priced</span>
-        </div>
-      </div>
-
-      <div class="cta-row">
-        <a class="btn primary hero-alert" href="not-circle.html">Not Circle / Not EURC</a>
-        <a class="btn primary" href="#networks">View Contracts</a>
-        <a class="btn" href="security.html">Security & Audit</a>
-        <a class="btn" href="docs.html">Documentation</a>
-      </div>
-    </div>
-
-    <div>
-      <div class="kpis">
-        <div class="kpi">
-          <div class="label">Networks</div>
-          <div class="value">Tron · Solana</div>
-        </div>
-        <div class="kpi">
-          <div class="label">Total Supply</div>
-          <div class="value">55,000,000,000 WERC</div>
-        </div>
-        <div class="kpi">
-          <div class="label">Public Listing</div>
-          <div class="value">CoinMarketCap</div>
-        </div>
-        <div class="kpi">
-          <div class="label">Support</div>
-          <div class="value mono">support@europa-club.org</div>
-        </div>
-      </div>
-
-      <hr class="hr"/>
-
-      <div class="card">
-        <h3>Quick Links</h3>
-        <p class="small">
-          <a href="https://coinmarketcap.com/currencies/euro-finance/" target="_blank">CoinMarketCap</a> ·
-          <a href="https://x.com/EuroFinanceClub" target="_blank">X</a> ·
-          <a href="https://t.me/eurofindefi" target="_blank">Telegram</a> ·
-          <a href="https://tronscan.org/#/token20/TFgKrD5o3vi9EkxkNTNvPFapBqm6KYxHVN" target="_blank">Tronscan</a> ·
-          <a href="https://solscan.io/token/FtbZe66bAPn4afYDGdW3Npj53Vp5Jn13DS7oKvSdF31t" target="_blank">Solscan</a>
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="networks">
-  <div class="container">
-    <h2>Official Networks & Contracts</h2>
-    <p class="subtitle">
-      Only these addresses should be treated as official. Verify on the explorer pages below.
-    </p>
-
-    <div class="grid-3">
-      <div class="card">
-        <h3>Tron (TRC-20)</h3>
-        <p>Token contract</p>
-        <div class="addr-row">
-          <div class="mono">TFgKrD5o3vi9EkxkNTNvPFapBqm6KYxHVN</div>
-        </div>
-        <p class="small">
-          <a href="https://tronscan.org/#/token20/TFgKrD5o3vi9EkxkNTNvPFapBqm6KYxHVN" target="_blank">View on Tronscan</a>
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Solana (SPL)</h3>
-        <p>Mint address</p>
-        <div class="addr-row">
-          <div class="mono">FtbZe66bAPn4afYDGdW3Npj53Vp5Jn13DS7oKvSdF31t</div>
-        </div>
-        <p class="small">
-          <a href="https://solscan.io/token/FtbZe66bAPn4afYDGdW3Npj53Vp5Jn13DS7oKvSdF31t" target="_blank">View on Solscan</a>
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Transparency</h3>
-        <p>
-          We publish links to explorers, audit resources, and public listings so third parties can verify on-chain information.
-        </p>
-        <ul class="list">
-          <li>CoinMarketCap listing</li>
-          <li>Explorer references (Tronscan / Solscan)</li>
-          <li>Audit report and risk disclosure</li>
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">
+            <div class="logo-icon">€</div>
+            <span>WERC</span>
+        </a>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#manifesto">Manifesto</a></li>
+            <li><a href="#primary">Primary</a></li>
+            <li><a href="#contracts">Contracts</a></li>
+            <li><a href="#tokenomics">Tokenomics</a></li>
+            <li><a href="#timeline">History</a></li>
+            <li><a href="#whitepaper">White Paper</a></li>
+            <li><a href="#community">Community</a></li>
         </ul>
-      </div>
-    </div>
+    </nav>
 
-    <hr class="hr"/>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>🔥</span>
+            <span>Live for 1.5+ Years</span>
+        </div>
+        <h1>We Are Not a Stablecoin.<br>We Are Not EURC.<br>We Are Independent.</h1>
+        <p class="hero-subtitle">Euro Finance (WERC)</p>
+        <p class="hero-description">
+            A sovereign DeFi protocol operating across multiple blockchains. 
+            No pegs. No backing. Pure market-driven value. For 18 months we've proven that 
+            independence is not just a word — it's our foundation.
+        </p>
+        <div class="cta-buttons">
+            <a href="https://coinmarketcap.com/currencies/euro-finance/" target="_blank" class="btn btn-primary">
+                <span>📊</span> View on CoinMarketCap
+            </a>
+            <a href="https://dex.coinmarketcap.com/token/bsc/0x1abfa06e7ebe1c647604781ea0495d132714c6e6/" target="_blank" class="btn btn-secondary">
+                <span>💱</span> Trade on DEX
+            </a>
+        </div>
 
-    <div class="card">
-      <h3>Supply & Price Policy</h3>
-      <p>
-        WERC is a <b>market-priced</b> digital asset. There is no claim that WERC is pegged to EUR or backed by fiat.
-        Supply is <b>fixed at 55,000,000,000 WERC</b>. Active networks are
-        <b>Tron (TRC-20)</b> and <b>Solana (SPL)</b>.
-      </p>
-    </div>
-  </div>
-</section>
-</main>
+        <!-- Official Contract Banner -->
+        <div class="official-contract fade-in">
+            <h3>⚡ Official Contract</h3>
+            <div class="contract-address" onclick="copyAddress('0x17d805a3f817e0e4E4d46c59d7c155bD907D8333')">
+                0x17d805a3f817e0e4E4d46c59d7c155bD907D8333
+            </div>
+            <p style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+                Click to copy • Arbitrum One (ERC-20)
+            </p>
+        </div>
+    </section>
 
-<footer class="footer">
-  <div class="container footer-grid">
-    <div>
-      <strong>EURO FINANCE (WERC)</strong>
-      <p class="small">Not Circle. Not EURC. Not euro-pegged. Market-priced asset.</p>
-    </div>
-    <div>
-      <strong>Official Links</strong>
-      <div class="small">
-        <a href="https://x.com/EuroFinanceClub" target="_blank">X</a><br/>
-        <a href="https://t.me/eurofindefi" target="_blank">Telegram</a><br/>
-        <a href="https://www.werc.finance" target="_blank">Website</a>
-      </div>
-    </div>
-  </div>
-  <div class="container small">© <span id="year"></span> Euro Finance (WERC)</div>
-</footer>
+    <!-- Manifesto Section -->
+    <section class="manifesto" id="manifesto">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Manifesto</h2>
+            <div class="manifesto-grid">
+                <div class="manifesto-card fade-in">
+                    <div class="manifesto-icon">🛡️</div>
+                    <h3>Not Affiliated with Circle</h3>
+                    <p>We have ZERO connection to Circle, EURC, or any centralized stablecoin issuer. WERC is a fully independent digital asset with its own unique economic model and vision.</p>
+                </div>
+                <div class="manifesto-card fade-in">
+                    <div class="manifesto-icon">📉</div>
+                    <h3>Not Pegged to EUR</h3>
+                    <p>No 1:1 peg to Euro. No fiat backing whatsoever. The price of WERC is determined purely by free market forces, supply and demand dynamics.</p>
+                </div>
+                <div class="manifesto-card fade-in">
+                    <div class="manifesto-icon">🏛️</div>
+                    <h3>Not a Stablecoin</h3>
+                    <p>WERC does NOT claim price stability. It is a volatile, market-priced digital asset designed for DeFi use cases, speculation, and ecosystem utility.</p>
+                </div>
+                <div class="manifesto-card fade-in">
+                    <div class="manifesto-icon">⚡</div>
+                    <h3>Pure DeFi Protocol</h3>
+                    <p>Operating for 18+ months across multiple chains. Through bear markets and bull runs, through FUD and hype — we remain autonomous, transparent, and unstoppable.</p>
+                </div>
+            </div>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+            <div class="team-quote fade-in">
+                <p>We don't follow the market. We don't follow fiat. We are our own sovereign nation in the DeFi landscape. No masters. No backing. Just pure decentralized finance.</p>
+                <footer>— Euro Finance Core Team</footer>
+            </div>
+        </div>
+    </section>
+
+    <!-- Primary Network Section -->
+    <section class="primary-network" id="primary">
+        <div class="primary-network-content fade-in">
+            <h2>
+                <span class="badge">Official</span>
+                Primary Network
+            </h2>
+            <p>
+                <strong>Arbitrum One (ERC-20)</strong> is the official and primary network for WERC.<br>
+                All other networks are secondary deployments for accessibility.
+            </p>
+            <div class="primary-contract" onclick="copyAddress('0x17d805a3f817e0e4E4d46c59d7c155bD907D8333')">
+                <span class="label">Arbitrum One:</span>
+                <span>0x17d805a3f817e0e4E4d46c59d7c155bD907D8333</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contracts Section -->
+    <section class="contracts" id="contracts">
+        <div class="container">
+            <h2 class="section-title fade-in">Smart Contracts</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+                Verified contracts across supported blockchains. Click to copy addresses.
+            </p>
+            
+            <div class="contracts-grid">
+                <!-- PRIMARY: Arbitrum -->
+                <div class="contract-card primary fade-in" onclick="copyAddress('0x17d805a3f817e0e4E4d46c59d7c155bD907D8333')">
+                    <div class="chain-icon arb">A</div>
+                    <div class="contract-info">
+                        <h4>🔷 Arbitrum One (ERC-20) • 18 Decimals</h4>
+                        <p class="contract-address">0x17d805a3f817e0e4E4d46c59d7c155bD907D8333</p>
+                    </div>
+                    <button class="copy-btn">Copy</button>
+                </div>
+
+                <!-- BNB - ИСПРАВЛЕННЫЙ КОНТРАКТ -->
+                <div class="contract-card fade-in" onclick="copyAddress('0x1abFa06E7EbE1c647604781EA0495d132714c6E6')">
+                    <div class="chain-icon bnb">B</div>
+                    <div class="contract-info">
+                        <h4>🔶 BNB Smart Chain (BEP-20) • 18 Decimals</h4>
+                        <p class="contract-address">0x1abFa06E7EbE1c647604781EA0495d132714c6E6</p>
+                    </div>
+                    <button class="copy-btn">Copy</button>
+                </div>
+
+                <!-- TRON -->
+                <div class="contract-card fade-in" onclick="copyAddress('TFgKrD5o3vi9EkxkNTNvPFapBqm6KYxHVN')">
+                    <div class="chain-icon tron">T</div>
+                    <div class="contract-info">
+                        <h4>🔴 TRON (TRC-20) • 18 Decimals</h4>
+                        <p class="contract-address">TFgKrD5o3vi9EkxkNTNvPFapBqm6KYxHVN</p>
+                    </div>
+                    <button class="copy-btn">Copy</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deprecated Contracts Section -->
+    <section class="deprecated">
+        <div class="container">
+            <h3 class="fade-in">
+                <span>⚠️</span>
+                Deprecated Contracts
+            </h3>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                These legacy contracts are no longer active. Do not interact with them.
+            </p>
+            <div class="deprecated-grid fade-in">
+                <div class="deprecated-card">
+                    <h4>Old Arbitrum (Deprecated)</h4>
+                    <p class="address">0x67e610D203bF6B57f491192cC882862ab6aB314d</p>
+                </div>
+                <div class="deprecated-card">
+                    <h4>Old BNB (Deprecated)</h4>
+                    <p class="address">0x602386220fE5Bb7c6f4d5468f102BAa5A7306773</p>
+                </div>
+                <div class="deprecated-card">
+                    <h4>Old Arbitrum #2 (Deprecated)</h4>
+                    <p class="address">0xE6F6cc6d9954Bf674b3274a69Ef44D2027bB1ABa</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokenomics Section -->
+    <section class="tokenomics" id="tokenomics">
+        <div class="container">
+            <h2 class="section-title fade-in">Tokenomics</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+                Total Supply: 55,000,000,000 WERC (Fixed Cap)
+            </p>
+            <div class="tokenomics-content">
+                <div class="tokenomics-chart fade-in">
+                    <svg class="chart-svg" viewBox="0 0 100 100">
+                        <!-- Liquidity 40% -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#0066FF" stroke-width="12"
+                                stroke-dasharray="100.5 150.8" stroke-dashoffset="0"/>
+                        <!-- Treasury 25% -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#7B61FF" stroke-width="12"
+                                stroke-dasharray="62.8 188.5" stroke-dashoffset="-100.5"/>
+                        <!-- Community 20% -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00D4FF" stroke-width="12"
+                                stroke-dasharray="50.3 201" stroke-dashoffset="-163.3"/>
+                        <!-- Team 10% -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#FFB800" stroke-width="12"
+                                stroke-dasharray="25.1 226.2" stroke-dashoffset="-213.6"/>
+                        <!-- Marketing 5% -->
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#FF6B6B" stroke-width="12"
+                                stroke-dasharray="12.6 238.7" stroke-dashoffset="-238.7"/>
+                    </svg>
+                    <div class="chart-center">
+                        <h3>55B</h3>
+                        <p>Total Supply</p>
+                    </div>
+                </div>
+                <div class="tokenomics-legend fade-in">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #0066FF;"></div>
+                        <div class="legend-info">
+                            <h4>💧 Liquidity & Market Making</h4>
+                            <p>DEX liquidity pools, CEX listings, market making operations</p>
+                        </div>
+                        <div class="legend-value">40%</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #7B61FF;"></div>
+                        <div class="legend-info">
+                            <h4>🏛️ Treasury & Reserves</h4>
+                            <p>Long-term reserves for integrations, partnerships, protocol development</p>
+                        </div>
+                        <div class="legend-value">25%</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00D4FF;"></div>
+                        <div class="legend-info">
+                            <h4>🎁 Community & Rewards</h4>
+                            <p>Incentives, airdrops, referral programs, ecosystem campaigns</p>
+                        </div>
+                        <div class="legend-value">20%</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FFB800;"></div>
+                        <div class="legend-info">
+                            <h4>👥 Team & Advisors</h4>
+                            <p>Multi-year vesting schedule to align with long-term growth</p>
+                        </div>
+                        <div class="legend-value">10%</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FF6B6B;"></div>
+                        <div class="legend-info">
+                            <h4>📢 Marketing & Growth</h4>
+                            <p>Promotion, brand building, strategic user acquisition</p>
+                        </div>
+                        <div class="legend-value">5%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline" id="timeline">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Journey</h2>
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Q3 2023</div>
+                        <h3>🚀 Project Genesis</h3>
+                        <p>WERC born as independent DeFi asset. Concept: No backing, no pegs — pure market mechanics. Initial development begins.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Q4 2023</div>
+                        <h3>⛓️ First Deployment</h3>
+                        <p>BNB Smart Chain launch. First liquidity pools created. Community formation begins. Early adopters join the movement.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Q1 2024</div>
+                        <h3>🌉 Multi-Chain Expansion</h3>
+                        <p>Arbitrum One deployment. Cross-chain bridges activated. True multi-chain vision realized.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Q2 2024</div>
+                        <h3>📊 CoinMarketCap Listing</h3>
+                        <p>Official CMC listing achieved. Global visibility. DEX integrations across multiple chains. Trading volume increases significantly.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Q3 2024</div>
+                        <h3>🛡️ Security & Audit</h3>
+                        <p>Dessert Finance audit completed. Contracts verified and published. Security transparency becomes our priority.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Q4 2024</div>
+                        <h3>🌍 Ecosystem Growth</h3>
+                        <p>1,180+ community members. TRON network added. Active trading across multiple blockchains. Sustainable organic growth.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Q1 2025</div>
+                        <h3>⚡ Current State</h3>
+                        <p>Mature DeFi protocol. Proven resilience. Strong community. Continuing independent path regardless of market conditions.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025+</div>
+                        <h3>🔮 The Future</h3>
+                        <p>New integrations. Stronger community. WERC evolves. Our mission: prove that independence works in DeFi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- White Paper Section -->
+    <section class="whitepaper" id="whitepaper">
+        <div class="container">
+            <h2 class="section-title fade-in">White Paper</h2>
+            <div class="whitepaper-content">
+                <div class="wp-nav">
+                    <div class="wp-nav-item active" onclick="showSection('abstract')">1. Overview</div>
+                    <div class="wp-nav-item" onclick="showSection('parameters')">2. Token Parameters</div>
+                    <div class="wp-nav-item" onclick="showSection('contracts-wp')">3. Contracts</div>
+                    <div class="wp-nav-item" onclick="showSection('tokenomics-wp')">4. Tokenomics</div>
+                    <div class="wp-nav-item" onclick="showSection('utility')">5. Utility</div>
+                    <div class="wp-nav-item" onclick="showSection('governance')">6. Governance</div>
+                    <div class="wp-nav-item" onclick="showSection('risks')">7. Risks</div>
+                </div>
+                <div class="wp-content">
+                    <div id="abstract" class="wp-section">
+                        <h3>1. Overview</h3>
+                        <div class="warning-box">
+                            <strong>⚠️ IMPORTANT DISCLAIMER:</strong> WERC is not a stablecoin, is not pegged 1:1 to EUR, and Euro Finance is not affiliated with Circle or Euro Coin (EURC). The price of WERC is fully market-driven.
+                        </div>
+                        <p>Euro Finance (WERC) is a euro-themed, multi-chain DeFi asset deployed on <strong>Arbitrum One, BNB Smart Chain, and TRON</strong>. The token is designed for transfers, liquidity provision, and other DeFi use cases, while explicitly avoiding any representation as an official or collateralized EUR stablecoin.</p>
+                        <p><strong>Key Principle:</strong> We are an independent entity. We do not rely on fiat backing, algorithmic pegs, or centralized issuers. WERC derives its value purely from market demand and utility within the DeFi ecosystem.</p>
+                        <p><strong>Primary Network:</strong> Arbitrum One (ERC-20) at <code>0x17d805a3f817e0e4E4d46c59d7c155bD907D8333</code> is the official primary contract.</p>
+                    </div>
+                    <div id="parameters" class="wp-section" style="display: none;">
+                        <h3>2. Token Parameters</h3>
+                        <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 0.75rem; color: var(--text-secondary);">Project Name</td>
+                                <td style="padding: 0.75rem; font-weight: 600;">Euro Finance</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 0.75rem; color: var(--text-secondary);">Token Ticker</td>
+                                <td style="padding: 0.75rem; font-weight: 600;">WERC</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 0.75rem; color: var(--text-secondary);">Type</td>
+                                <td style="padding: 0.75rem; font-weight: 600;">Multi-chain DeFi token (Arbitrum, BSC, TRON)</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 0.75rem; color: var(--text-secondary);">Total Supply</td>
+                                <td style="padding: 0.75rem; font-weight: 600;">55,000,000,000 WERC (Fixed)</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 0.75rem; color: var(--text-secondary);">Decimals</td>
+                                <td style="padding: 0.75rem; font-weight: 600;">18 (EVM chains)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; color: var(--text-secondary);">Peg Status</td>
+                                <td style="padding: 0.75rem; font-weight: 600; color: var(--primary-cyan);">None. Market-priced only.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="contracts-wp" class="wp-section" style="display: none;">
+                        <h3>3. Official Smart Contract Addresses</h3>
+                        <p>Only the contracts listed below are considered official for the current WERC token. Users must always ensure they interact with the correct address and the correct network.</p>
+                        
+                        <div class="warning-box" style="background: rgba(0, 212, 255, 0.1); border-color: var(--primary-cyan);">
+                            <strong style="color: var(--primary-cyan);">🔷 PRIMARY — Arbitrum One (ERC-20)</strong><br>
+                            <code style="font-size: 1.1rem; margin-top: 0.5rem; display: block;">0x17d805a3f817e0e4E4d46c59d7c155bD907D8333</code>
+                        </div>
+
+                        <p style="margin-top: 1.5rem;"><strong>🔶 BNB Smart Chain (BEP-20):</strong><br>
+                        <code>0x1abFa06E7EbE1c647604781EA0495d132714c6E6</code></p>
+
+                        <p><strong>🔴 TRON (TRC-20):</strong><br>
+                        <code>TFgKrD5o3vi9EkxkNTNvPFapBqm6KYxHVN</code></p>
+
+                        <div class="warning-box" style="margin-top: 1.5rem;">
+                            <strong>⚠️ Deprecated Contracts:</strong> Legacy contracts (0x67e610D203bF6B57f491192cC882862ab6aB314d on Arbitrum, 0x602386220fE5Bb7c6f4d5468f102BAa5A7306773 on BSC, and 0xE6F6cc6d9954Bf674b3274a69Ef44D2027bB1ABa on Arbitrum) are considered deprecated and are not used for the current WERC token.
+                        </div>
+                    </div>
+                    <div id="tokenomics-wp" class="wp-section" style="display: none;">
+                        <h3>4. Tokenomics Structure</h3>
+                        <p><strong>Total Supply: 55,000,000,000 WERC (Fixed Cap)</strong></p>
+                        <ul style="margin-top: 1rem;">
+                            <li><strong>💧 Liquidity & Market Making:</strong> 40% (22B WERC)</li>
+                            <li><strong>🏛️ Treasury & Reserves:</strong> 25% (13.75B WERC)</li>
+                            <li><strong>🎁 Community & Rewards:</strong> 20% (11B WERC)</li>
+                            <li><strong>👥 Team & Advisors:</strong> 10% (5.5B WERC)</li>
+                            <li><strong>📢 Marketing & Growth:</strong> 5% (2.75B WERC)</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Vesting & Locks:</strong> Team allocation is subject to multi-year vesting schedules to ensure long-term alignment. Treasury funds are released based on milestone achievements, not arbitrary timelines.</p>
+                    </div>
+                    <div id="utility" class="wp-section" style="display: none;">
+                        <h3>5. Utility and Use Cases</h3>
+                        <ul>
+                            <li><strong>Transfers:</strong> Fast, low-cost transfers of euro-themed value between supported chains</li>
+                            <li><strong>Liquidity Provision:</strong> Use in liquidity pools and automated market makers on supported DEXes</li>
+                            <li><strong>DeFi Integrations:</strong> Farming, lending, staking, and other protocol integrations</li>
+                            <li><strong>Ecosystem Rewards:</strong> Incentives, loyalty programs, airdrops, and participation rewards</li>
+                            <li><strong>Speculation:</strong> Market-priced asset for traders seeking exposure to independent DeFi tokens</li>
+                            <li><strong>Cross-Chain:</strong> Bridge between supported blockchains seamlessly</li>
+                        </ul>
+                    </div>
+                    <div id="governance" class="wp-section" style="display: none;">
+                        <h3>6. Governance & Transparency</h3>
+                        <p>Smart contract source code is publicly available on GitHub and can be independently reviewed. Major changes to tokenomics or core parameters are announced through official channels (Telegram, X, website).</p>
+                        <p>Official addresses and documentation links are kept up to date in this repository and on explorers. We believe in radical transparency — no hidden functions, no admin keys that can freeze funds, no centralized control.</p>
+                        <p><strong>Community Governance:</strong> Future governance mechanisms may be implemented to allow token holders to vote on protocol upgrades and treasury allocations.</p>
+                    </div>
+                    <div id="risks" class="wp-section" style="display: none;">
+                        <h3>7. Risks & Disclaimer</h3>
+                        <div class="warning-box">
+                            <strong>⚠️ HIGH RISK WARNING:</strong> Crypto assets carry significant risks, including but not limited to:
+                            <ul style="margin-top: 0.5rem;">
+                                <li>Extreme price volatility (WERC is NOT a stablecoin)</li>
+                                <li>Smart contract vulnerabilities (despite audits, bugs may exist)</li>
+                                <li>Market manipulation and low liquidity risks</li>
+                                <li>Regulatory uncertainty in various jurisdictions</li>
+                                <li>Total loss of capital possibility</li>
+                            </ul>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>Legal Disclaimer:</strong> Nothing in this document constitutes legal, tax, financial, or investment advice. Euro Finance (WERC) does not guarantee profits, price stability, or future value. Users must independently assess their risk tolerance and comply with the laws of their respective jurisdictions.</p>
+                        <p><strong>Not Affiliated:</strong> We are not affiliated with Circle, EURC, the European Central Bank, or any government entity. The "€" symbol is used for thematic branding only.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community" id="community">
+        <div class="container">
+            <h2 class="section-title fade-in">Join the Community</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Connect with thousands of WERC holders across the globe
+            </p>
+            <div class="community-grid">
+                <a href="https://t.me/eurofindefi" target="_blank" class="community-link fade-in">
+                    <div class="community-icon">✈️</div>
+                    <span>Telegram</span>
+                </a>
+                <a href="https://x.com/EuroFinanceClub" target="_blank" class="community-link fade-in">
+                    <div class="community-icon">𝕏</div>
+                    <span>Twitter / X</span>
+                </a>
+                <a href="https://github.com/europa-club" target="_blank" class="community-link fade-in">
+                    <div class="community-icon">⚙️</div>
+                    <span>GitHub</span>
+                </a>
+                <a href="mailto:support@europa-club.org" class="community-link fade-in">
+                    <div class="community-icon">✉️</div>
+                    <span>Email</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://www.werc.finance/">Website</a>
+            <a href="https://coinmarketcap.com/currencies/euro-finance/">CoinMarketCap</a>
+            <a href="https://dex.coinmarketcap.com/token/bsc/0x1abfa06e7ebe1c647604781ea0495d132714c6e6/">DEX</a>
+            <a href="https://github.com/europa-club">GitHub</a>
+        </div>
+        <p class="copyright">
+            © 2025 Euro Finance (WERC). Independent Multi-Chain DeFi Protocol.<br>
+            Not affiliated with Circle, Tether, or any centralized entity.<br>
+            <strong>Primary Contract: 0x17d805a3f817e0e4E4d46c59d7c155bD907D8333 (Arbitrum)</strong>
+        </p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Address copied to clipboard!</div>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Copy Address Function
+        function copyAddress(address) {
+            navigator.clipboard.writeText(address).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            });
+        }
+
+        // White Paper Section Switcher
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.wp-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Update active nav item
+            document.querySelectorAll('.wp-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(10, 10, 15, 0.95)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 15, 0.8)';
+            }
+        });
+    </script>
 </body>
 </html>
